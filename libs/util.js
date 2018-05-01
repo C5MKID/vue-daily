@@ -18,6 +18,7 @@ Util.ajax.interceptors.response.use( res => {
   return res.data;
 });
 
+// 获取当天0点0分0秒的时间戳
 Util.getTodayTime = function () {
   const date = new Date();
   date.setHours(0);
@@ -27,6 +28,7 @@ Util.getTodayTime = function () {
   return date.getTime();
 };
 
+// 当前日期格式化20180501
 Util.prevDay = function ( timestamp = (new Date()).getTime() ) {
   const date = new Date( timestamp );
   const year = date.getFullYear();
