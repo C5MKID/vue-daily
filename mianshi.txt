@@ -10,7 +10,7 @@
 
 
 	2、对于数组类型的判断：
-		1、arr instanceof Array 
+		1、arr instanceof Array
 		2、arr.constructor === Array
 		3、Array.prototype.isPrototypeOf(arr);
 		4、Object.getPrototypeOf(a) === Array.prototype;
@@ -49,7 +49,7 @@
 		2、str.substring( start,end ) ----- 截取字符串，不支持负数，
 		3、str.substr( start,length ) ---- 截取指定长度的字符。
 
-		五、其它访求 
+		五、其它访求
 		1、str.split(字符/正则，length ) ---- 返回数组。指定分割符。length可选。可以指定返回的数组长度。
 		2、str.concat(str2) ------- 拼接字符串。
 		3、str.trim() ----- 去除空格。
@@ -109,7 +109,7 @@
 				window.event.canceBubble = true;
 			};
 
-	
+
 	6、数组去重
 		1): function de_repeat(arr) {
 			var newArr = [];
@@ -177,3 +177,6 @@
 				}
 				return arr;
 			}
+
+		9、水平垂直问题
+		
