@@ -1,0 +1,179 @@
+﻿一、js问题：
+	1、数据类型： （ 一共七种两大类 ，其中symbol是es6引入的 ）
+		原始类型： String / Number / Boolean / undefined / null / symbol
+		引用类型： Object（ 包括： Array ）
+
+		typeof能检测出来的类型类型： string / number / boolean / undefined / symbol / function / object
+
+		注意： typeof [1,2,3] // object
+			   typeof null // object
+
+
+	2、对于数组类型的判断：
+		1、arr instanceof Array 
+		2、arr.constructor === Array
+		3、Array.prototype.isPrototypeOf(arr);
+		4、Object.getPrototypeOf(a) === Array.prototype;
+		5、Object.prototype.toStirng.call(arr).slice(8,-1) === 'Array';
+		6、Array.isArray( arr ); // es5方法
+		// 1-4的方法在遇到多个执行上下方，比如页面有iframe框架时。可能会出错。
+		// 推荐5，6。其实5是6在的一种polyfill ，5是各大主流框架检测数据类型的方式。
+
+
+	3、对象的定义
+		1、直接量： var obj = {};
+		2、new操作符： var obj = new Object();
+		3、create: var obj = Object.create();
+		// 3方法：如何参数给的是null，则创建是一个没有任何继承的空对象。不存在toString方法
+		// 如果想创建一个和1，2等价的空对象，则要传入" Object.prototype "
+
+	4、字符串操作
+		一、转换方法
+		1、str.toUpperCase(); -----转换大写。
+		2、str.toLowerCase(); -----转换小写。
+
+		二、查找方法
+		1、str.indexOf(字符) -------查找位置，返回首次出现的下标 ，没有找到则为-1；
+		2、str.lastIndexOf(字符) ------ 返回最后一次出现的下标
+		3、str.charAt(下标) ------ 返回下标对应的字符串。没有则返回空字符。
+		4、str.charCodeAt(下标); ----- 返回指定位置的字符unicode的编码。没有则返回 NaN;
+		5、String.formCharCode(编码1，编码2...) ----返回指定编码组成的字符。编码提供不对会报错。
+
+		三、匹配方法
+		1、str.match(字符串/正则) ---- 匹配字符，返回匹配到的字符组成的数组，没有则返回null。支持全局
+		2、str.search(字符串/正则) ---- 匹配字符 ，返回匹配到的字符首次出现的位置。没有则返回-1，忽略全局。
+		3、str.replace(旧字符/正则，新字符) ---- 返回替换后的新字符。$1-$99代表正则子串的匹配文本。
+
+		四、截取方法
+		1、str.slice( start,end ) ----- 截取字符串。支持负数。
+		2、str.substring( start,end ) ----- 截取字符串，不支持负数，
+		3、str.substr( start,length ) ---- 截取指定长度的字符。
+
+		五、其它访求 
+		1、str.split(字符/正则，length ) ---- 返回数组。指定分割符。length可选。可以指定返回的数组长度。
+		2、str.concat(str2) ------- 拼接字符串。
+		3、str.trim() ----- 去除空格。
+
+
+		数组操作方法
+		一、增删
+		1、arr.unshift() --- 前置元素。返回数组长度
+		2、arr.push() --- 追加元素。返回数组长度。
+		3、arr.concat(arr2,arr3) ---- 拼接多个数组 。返回拼接后的新数组。
+
+		4、arr.shift() ---- 删除第一位元素，返回被删除的元素。
+		5、arr.pop() ------- 删除最后一位元素，返回被删除的元素。
+
+		二、截取方法
+		1、arr.slice(start,end) ----- 返回截取的数组。
+		2、arr.splice( start,length,元素1，元素2.. ) 从指定位置删除length个元素，然后插入元素。返回被删除的元素组成的数组。
+
+		三、查找方法
+		1、arr.indexOf(元素) ----- 返回指定元素的下标。
+		2、arr.lastIndexOf(元素) ----- 返回指定元素最后一次出现的位置。
+
+		四、其它方法
+		1、arr.join(字符) --- 返回用指定字符拼接元素的字符串。
+
+		五、排序方法
+		1、arr.sort() ---- 无参数则以unicode排序，function参数a-b 增序 b-a 降序。
+		2、arr.reverse() --- 倒序
+
+		六、遍历方法
+		1、arr.forEach(function(v,i,a){}) ----- 数组遍历类似for循环
+		2、arr.map(function(v,i,a){}) -------- 遍历数组为每个元素执行操作函数。返回一个新元素组成的新数组，fn必须有return
+		3、arr.filter(function(v,i,a){}) ------- 遍历数组，返回一个布尔值。用以过滤数组元素。返回新数组 fn必须有return
+		4、arr.every(function(v,i,a){}) ------- 遍历数组。只有数组每个元素，执行fn返回true时，则返回true。fn必须有return
+		5、arr.some(function(v,i,a){}) ------- 遍历数组，只要数组某个元素。执行fn返回true。时。则方法本身返回true.fn必须有return
+		6、arr.reduce(function(v1,v2){ return v1 + v2 },初始值) ---- 对数组元素进行折叠。方法本身返回一个值。
+
+
+	5、事件问题
+		1、阻止默认事件
+			ev.preventDefault() // w3c
+			window.event.returnValue = false // IE
+			// 兼容处理
+			if( window.event ){
+				window.event.returnValue = false;
+			}else{
+				ev.preventDefault();
+			};
+
+		2、阻止事件冒泡
+			ev.stopPropagetion() // 非IE
+			window.event.canceBubble = true // IE
+			// 兼容处理
+			if( ev.stopPagetion ){
+				ev.stopPagetion();
+			}else{
+				window.event.canceBubble = true;
+			};
+
+	
+	6、数组去重
+		1): function de_repeat(arr) {
+			var newArr = [];
+			for(var i=0,len=arr.length; i<len; i++){
+				if( newArr.indexOf(arr[i]) == -1 ){
+					newArr.push(arr[i]);
+				}
+			}
+			return newArr;
+		};
+
+		2): var newArr = [...new Set(arr)] // es6方法
+			var newArr = Array.from(new Set(arr)); // es6方法
+
+	7、对象深复制
+		function deepCopy(o){
+			if( typeof o !== 'object' )return o;
+			var c = Object.prototype.toString.call(obj) === '[object Array]' ? [] : {}
+			for( var k in o ){
+				c[k] = typeof o[k] === 'object' ? deepCopy( o[k] ) : o[k];
+			};
+			return c;
+		}
+	8、 排序问题
+		1)、 冒泡排序
+			function bubleSort(arr){
+				var newArr = [];
+				for( var i=0,len=arr.length; i<len; i++ ){
+					for(var j=0; j<len-1-i; j++){
+						if(arr[j] > arr[j+1]){
+							var temp = arr[j];
+							arr[j] = arr[j+1];
+							arr[j+1] = temp;
+						}
+					}
+				}
+				return arr;
+			}
+
+		2)、 快速排序
+			function fastSort(arr){
+				if( arr.length <= 1 )return arr;
+				var midVal = arr.splice(Math.floor(arr.length/2),1);
+				var left = [];
+				var right = [];
+				for( var i=0; i<arr.length; i++ ){
+					arr[i] < midVal[0] ? left.push(arr[i]) : right.push(arr[i]);
+				};
+				return fastSort(left).concat(midVal, fastSort(right));
+			}
+
+		3)、 选择排序
+			function selectSort(arr){
+				var len = arr.length;
+				for(var i=0; i<len-1; i++){
+					var minIndex = i;
+					for(var j=i+1; j<len; j++){
+						if( arr[j] < arr[minIndex] ){
+							minIndex = j;
+						}
+					};
+					var temp = arr[i];
+					arr[i] = arr[minIndex];
+					arr[minIndex] = temp;
+				}
+				return arr;
+			}
